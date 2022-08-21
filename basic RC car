@@ -1,0 +1,107 @@
+//Pins Defined:
+   
+   // Motor A Pins Defined as:
+   int enA = 9; // PWM pin:
+   int in1 = 11; // PWM pin:
+   int in2 = 10; // PWM pin:
+     
+   //Motor B Pins Defined:
+   int enB = 6; // PWM pin:
+   int in3 = 5;
+   int in4 = 4;
+   
+   // Control Buttons Defined as:
+   int fwdButton = 49;
+   int revButton = 51;
+   int stopButton = 53;
+   
+   // Notification LEDs Defined as:
+   int redLED = 1;
+   int whiteLED = 2;
+   int greenLED = 3;
+   
+   
+   
+void setup() 
+{
+  // Motor Control Output Pins are:
+  pinMode(enA, OUTPUT);
+  pinMode(enB, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+  pinMode(in3, OUTPUT);
+  pinMode(in4, OUTPUT);
+
+  // Control Input Buttons are:
+  pinMode(fwdButton, INPUT);
+  pinMode(revButton, INPUT);
+  pinMode(stopButton, INPUT);
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
+  
+  // Notification LEDs:
+  pinMode(redLED, OUTPUT);
+  pinMode(whiteLED, OUTPUT);
+  pinMode(greenLED, OUTPUT);
+}
+
+void loop() 
+{
+  if (digitalRead(fwdButton) == HIGH)
+  {
+  // Turn Motor A on:
+  digitalWrite(in1, LOW);
+  digitalWrite(in2, HIGH);
+  digitalWrite(enA, 200);
+
+  // Turn Motor B on:
+  digitalWrite(in3, HIGH);
+  digitalWrite(in4, LOW);
+  digitalWrite(enB, 200);
+
+  // Rev Notification LED:
+  digitalWrite(greenLED, HIGH);
+  }
+  
+  else
+  {
+  digitalWrite(in1, LOW); 
+  digitalWrite(in4, LOW);
+  digitalWrite(greenLED, LOW);
+  }
+  }
+  
+  // Reverse Motors:
+  if (digitalRead(revButton) == HIGH)
+  {
+
+  // Turn Motor A on:
+  digitalWrite(in2, LOW);
+  digitalWrite(in1, HIGH);
+  digitalWrite(enA, 200);
+
+  // Turn Motor B on:
+  digitalWrite(in4, LOW);
+  digitalWrite(in3, HIGH);
+  digitalWrite(enB, 200);
+
+  // Fwd Notification LED:
+  digitalWrite(greenLED, HIGH);
+  
+  }
+  else
+  {
+  digitalWrite(in4, LOW);
+  digitalWrite(in3, LOW);
+  digitalWrite(greenLED, LOW);
+
+  // Stop:
+  if digitalRead(stopButton) == HIGH)
+  {
+  digitalWrite(in1, LOW); 
+  digitalWrite(in4, LOW);
+  digitalWrite(greenLED, LOW);
+  digitalWrite(in4, LOW);
+  digitalWrite(in3, LOW);
+  }
+}
