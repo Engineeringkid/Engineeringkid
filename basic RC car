@@ -1,107 +1,130 @@
-//Pins Defined:
-   
-   // Motor A Pins Defined as:
-   int enA = 9; // PWM pin:
-   int in1 = 11; // PWM pin:
-   int in2 = 10; // PWM pin:
-     
-   //Motor B Pins Defined:
-   int enB = 6; // PWM pin:
-   int in3 = 5;
-   int in4 = 4;
-   
-   // Control Buttons Defined as:
-   int fwdButton = 49;
-   int revButton = 51;
-   int stopButton = 53;
-   
-   // Notification LEDs Defined as:
-   int redLED = 1;
-   int whiteLED = 2;
-   int greenLED = 3;
-   
-   
-   
-void setup() 
-{
-  // Motor Control Output Pins are:
-  pinMode(enA, OUTPUT);
-  pinMode(enB, OUTPUT);
-  pinMode(in1, OUTPUT);
-  pinMode(in2, OUTPUT);
-  pinMode(in3, OUTPUT);
-  pinMode(in4, OUTPUT);
+// Motor A Pins Defined as:
+   const int in1 = 13; // PWM pin:
+   const int in2 = 12; // PWM pin:
+   const int enA = 11; //PWM pin:
 
-  // Control Input Buttons are:
-  pinMode(fwdButton, INPUT);
-  pinMode(revButton, INPUT);
-  pinMode(stopButton, INPUT);
-  digitalWrite(in1, LOW);
-  digitalWrite(in2, HIGH);
-  
-  // Notification LEDs:
-  pinMode(redLED, OUTPUT);
-  pinMode(whiteLED, OUTPUT);
-  pinMode(greenLED, OUTPUT);
+   // Motor B Pins Defined as:
+  const int in3 = 6; //PWM pin:
+  const int in4 = 5; //PWM pin:
+  const int enB = 9; //PWM pin:
+
+   // Motor speeds:
+   int fwdSpeed = 200;
+   int slowSpeed = 200;
+   int revSpeed = 155;
+
+   // Button state:
+   int fwd = 0;
+   int rev = 0;
+   int stp = 0;
+
+   // Control Buttons Defined as:
+   int fwdButton = 15;
+   int revButton = 16;
+   int stopButton = 17;
+
+   // Notification LEDs Defined as:
+   int whiteLED = 3;
+   int greenLED = 4;
+   int redLED = 2;
+   int i= 0;
+
+void setup()
+{
+   // Motor Control Output Pins are:
+
+   pinMode(in1, OUTPUT);
+   pinMode(in2, OUTPUT);
+   pinMode(enA, INPUT);
+   pinMode(in3, OUTPUT);
+   pinMode(in4, OUTPUT);
+   pinMode(enB, INPUT);
+
+   // Control Input Buttons are:
+   pinMode(fwdButton, INPUT_PULLUP);
+   pinMode(revButton, INPUT_PULLUP);
+   pinMode(stopButton, INPUT_PULLUP);
+
+   // Notification LEDs:
+   pinMode(redLED, OUTPUT);
+   pinMode(whiteLED, OUTPUT);
+   pinMode(greenLED, OUTPUT);
+
 }
 
-void loop() 
+void loop()
 {
-  if (digitalRead(fwdButton) == HIGH)
-  {
-  // Turn Motor A on:
-  digitalWrite(in1, LOW);
-  digitalWrite(in2, HIGH);
-  digitalWrite(enA, 200);
+   
+   fwd = digitalRead(fwdButton);
+   rev = digitalRead(revButton);
+   stp = digitalRead(stopButton);
 
-  // Turn Motor B on:
-  digitalWrite(in3, HIGH);
-  digitalWrite(in4, LOW);
-  digitalWrite(enB, 200);
+if (fwd == LOW)
+{
+   for
+   // Forward Motion:
+   analogWrite(in1, fwdSpeed);
+   analogWrite(in3, fwdSpeed);
+   digitalWrite(in2, LOW);
+   digitalWrite(in4, LOW);
+   digitalWrite(enA, 200);
+   digitalWrite(enB, 200);
 
-  // Rev Notification LED:
-  digitalWrite(greenLED, HIGH);
-  }
-  
-  else
-  {
-  digitalWrite(in1, LOW); 
-  digitalWrite(in4, LOW);
-  digitalWrite(greenLED, LOW);
-  }
-  }
-  
-  // Reverse Motors:
-  if (digitalRead(revButton) == HIGH)
-  {
+   // Fwd Notification LED:
+   digitalWrite(greenLED, HIGH);
+}
 
-  // Turn Motor A on:
-  digitalWrite(in2, LOW);
-  digitalWrite(in1, HIGH);
-  digitalWrite(enA, 200);
+else if (rev == LOW)
+{
+   analogWrite(in2, revSpeed);
+   analogWrite(in4, revSpeed);
+   digitalWrite(in1, LOW);
+   digitalWrite(in3, LOW);
+   digitalWrite(enA, 155);
+   digitalWrite(enB, 155);
 
-  // Turn Motor B on:
-  digitalWrite(in4, LOW);
-  digitalWrite(in3, HIGH);
-  digitalWrite(enB, 200);
+   // Rev Notification LED:
+   digitalWrite(whiteLED, HIGH);
+   delay(50);
+   digitalWrite(whiteLED, LOW);
+   delay(50);
+}
 
-  // Fwd Notification LED:
-  digitalWrite(greenLED, HIGH);
-  
-  }
-  else
-  {
-  digitalWrite(in4, LOW);
-  digitalWrite(in3, LOW);
-  digitalWrite(greenLED, LOW);
+else
+{
+   digitalWrite(in1, LOW);
+   digitalWrite(in2, LOW);
+   digitalWrite(in3, LOW);
+   digitalWrite(in4, LOW);
+   digitalWrite(greenLED, LOW);
+   digitalWrite(whiteLED, LOW);
+}
 
-  // Stop:
-  if digitalRead(stopButton) == HIGH)
-  {
-  digitalWrite(in1, LOW); 
-  digitalWrite(in4, LOW);
-  digitalWrite(greenLED, LOW);
-  digitalWrite(in4, LOW);
-  digitalWrite(in3, LOW);
-  }
+   // Stop:
+if (stp == LOW)
+{
+   //Motor A, B and Notification LED off:
+   digitalWrite(in1, LOW);
+   digitalWrite(in2, LOW);
+   digitalWrite(greenLED, LOW);
+   digitalWrite(in4, LOW);
+   digitalWrite(in3, LOW);
+   digitalWrite(whiteLED, LOW);
+
+   // Stop Notification LED on: 
+   for(i=0; i<5; i++)
+   {
+   digitalWrite(redLED, HIGH);
+   delay(20);
+   digitalWrite(redLED, LOW);
+   delay(20);
+   }
+   for(i=5; i>0; i--)
+   {
+   digitalWrite(redLED, HIGH);
+   delay(20);
+   digitalWrite(redLED, LOW);
+   delay(20);
+   }
+}
 }
